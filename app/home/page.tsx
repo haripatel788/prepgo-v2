@@ -39,20 +39,28 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">PrepGo</h1>
-          <button
-            onClick={() => {
-              fetch('/api/auth/logout', { method: 'POST' });
-              router.push('/login');
-            }}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-          >
-            Logout
-          </button>
-        </div>
-      </header>
+<header className="bg-white shadow">
+  <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
+    <h1 className="text-3xl font-bold text-gray-900">PrepGo</h1>
+    <div className="flex gap-4">
+      <button
+        onClick={() => router.push('/profile')}
+        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+      >
+        Profile
+      </button>
+      <button
+        onClick={() => {
+          fetch('/api/auth/logout', { method: 'POST' });
+          router.push('/login');
+        }}
+        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+</header>
 
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow p-6 mb-6">

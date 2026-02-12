@@ -7,12 +7,14 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { username, password, firstName, lastName, profilePic } = body;
 
-    if (!username || !password) {
+
+    if (!username || !password || !firstName || !lastName) {
       return NextResponse.json(
-        { error: 'Username and password are required' },
+        { error: 'All fields are required' },
         { status: 400 }
       );
     }
+
 
     const existingUser = await sql`
       SELECT * FROM users WHERE username = ${username}
