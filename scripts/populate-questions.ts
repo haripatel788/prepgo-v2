@@ -238,7 +238,6 @@ async function populateQuestions() {
       }
     ];
 
-    // READING/WRITING QUESTIONS
     const readingWritingQuestions = [
       {
         question_text: 'Which word best completes the sentence?\n\nThe scientist\'s findings were _____, contradicting decades of accepted research.\n',
