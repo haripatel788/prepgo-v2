@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
       }
     });
 
-  } catch (error) {
+  } catch {
     return NextResponse.json({ user: null }, { status: 401 });
   }
 }

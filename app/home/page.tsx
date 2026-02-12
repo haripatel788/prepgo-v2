@@ -50,6 +50,12 @@ export default function Home() {
         Profile
       </button>
       <button
+        onClick={() => router.push('/practice')}
+        className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600"
+      >
+        Practice
+      </button>
+      <button
         onClick={() => {
           fetch('/api/auth/logout', { method: 'POST' });
           router.push('/login');
@@ -74,7 +80,10 @@ export default function Home() {
           <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
             <h3 className="text-xl font-bold text-blue-600 mb-2">Reading</h3>
             <p className="text-gray-600 mb-4">Practice reading comprehension</p>
-            <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+            <button
+              onClick={() => router.push('/practice?subject=reading-writing')}
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+            >
               Start Practice
             </button>
           </div>
@@ -82,7 +91,10 @@ export default function Home() {
           <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
             <h3 className="text-xl font-bold text-green-600 mb-2">Writing</h3>
             <p className="text-gray-600 mb-4">Improve your writing skills</p>
-            <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+            <button
+              onClick={() => router.push('/practice?subject=reading-writing')}
+              className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
+            >
               Start Practice
             </button>
           </div>
@@ -90,7 +102,10 @@ export default function Home() {
           <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
             <h3 className="text-xl font-bold text-purple-600 mb-2">Math</h3>
             <p className="text-gray-600 mb-4">Practice math problems</p>
-            <button className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
+            <button
+              onClick={() => router.push('/practice?subject=math')}
+              className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700"
+            >
               Start Practice
             </button>
           </div>
