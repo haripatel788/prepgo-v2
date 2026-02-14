@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 type SubjectType = 'reading-writing' | 'math';
@@ -17,7 +17,7 @@ type PracticeQuestion = {
 
 const SESSION_LENGTH = 10;
 
-export default function PracticePage() {
+function PracticePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -140,6 +140,7 @@ export default function PracticePage() {
           setSavedScore(data.score);
         }
       } catch {
+        // If score save fails, user still sees local result.
       }
     }
   };
@@ -169,6 +170,7 @@ export default function PracticePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Navigation */}
       <nav className="bg-white/80 backdrop-blur-lg border-b border-slate-200/50 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -202,6 +204,7 @@ export default function PracticePage() {
 
       <main className="max-w-5xl mx-auto px-6 py-12">
         {!sessionStarted ? (
+          /* Subject Selection Screen */
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
               <div className="inline-block mb-4">
@@ -219,6 +222,7 @@ export default function PracticePage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-8">
+              {/* Reading/Writing Card */}
               <button
                 onClick={() => setSubject('reading-writing')}
                 className={`group relative overflow-hidden rounded-2xl p-8 text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${
@@ -253,6 +257,7 @@ export default function PracticePage() {
                 )}
               </button>
 
+              {/* Math Card */}
               <button
                 onClick={() => setSubject('math')}
                 className={`group relative overflow-hidden rounded-2xl p-8 text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${
@@ -318,6 +323,7 @@ export default function PracticePage() {
             )}
           </div>
         ) : isSessionComplete ? (
+          /* Session Complete Screen */
           <div className="max-w-2xl mx-auto text-center">
             <div className="bg-white rounded-3xl shadow-2xl p-12 border border-slate-100">
               <div className="mb-8">
@@ -370,7 +376,9 @@ export default function PracticePage() {
             </div>
           </div>
         ) : (
+          /* Question Screen */
           <div className="space-y-6">
+            {/* Progress Header */}
             <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
               <div className="flex items-center justify-between">
                 <div>
@@ -391,6 +399,8 @@ export default function PracticePage() {
                 </div>
               </div>
             </div>
+
+            {/* Question Card */}
             <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-100">
               <div className="mb-8">
                 <p className="text-xl font-medium text-slate-900 leading-relaxed whitespace-pre-wrap">
@@ -398,6 +408,7 @@ export default function PracticePage() {
                 </p>
               </div>
 
+              {/* Answer Options */}
               <div className="space-y-3 mb-8">
                 {activeQuestion?.options.map((option) => {
                   const isSelected = selectedAnswer === option.label;
@@ -441,6 +452,7 @@ export default function PracticePage() {
                 })}
               </div>
 
+              {/* Action Buttons */}
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={handleSubmitAnswer}
@@ -466,6 +478,7 @@ export default function PracticePage() {
                 </button>
               </div>
 
+              {/* Hint */}
               {showHint && activeQuestion?.hint && (
                 <div className="mt-6 p-4 rounded-xl border-2 border-amber-300 bg-amber-50">
                   <div className="flex items-start gap-3">
@@ -482,6 +495,7 @@ export default function PracticePage() {
                 </div>
               )}
 
+              {/* Explanation */}
               {submittedAnswer && activeQuestion?.explanation && (
                 <div className="mt-6 p-4 rounded-xl border-2 border-blue-300 bg-blue-50">
                   <div className="flex items-start gap-3">
@@ -502,5 +516,20 @@ export default function PracticePage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function PracticePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="text-xl font-semibold text-slate-700">Loading...</div>
+        </div>
+      </div>
+    }>
+      <PracticePageContent />
+    </Suspense>
   );
 }
