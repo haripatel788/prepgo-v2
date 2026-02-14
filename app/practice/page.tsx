@@ -140,7 +140,6 @@ function PracticePageContent() {
           setSavedScore(data.score);
         }
       } catch {
-        // If score save fails, user still sees local result.
       }
     }
   };
@@ -170,7 +169,7 @@ function PracticePageContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Navigation */}
+
       <nav className="bg-white/80 backdrop-blur-lg border-b border-slate-200/50 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -204,7 +203,7 @@ function PracticePageContent() {
 
       <main className="max-w-5xl mx-auto px-6 py-12">
         {!sessionStarted ? (
-          /* Subject Selection Screen */
+
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
               <div className="inline-block mb-4">
@@ -222,7 +221,7 @@ function PracticePageContent() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-8">
-              {/* Reading/Writing Card */}
+
               <button
                 onClick={() => setSubject('reading-writing')}
                 className={`group relative overflow-hidden rounded-2xl p-8 text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${
@@ -257,7 +256,6 @@ function PracticePageContent() {
                 )}
               </button>
 
-              {/* Math Card */}
               <button
                 onClick={() => setSubject('math')}
                 className={`group relative overflow-hidden rounded-2xl p-8 text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${
@@ -323,7 +321,6 @@ function PracticePageContent() {
             )}
           </div>
         ) : isSessionComplete ? (
-          /* Session Complete Screen */
           <div className="max-w-2xl mx-auto text-center">
             <div className="bg-white rounded-3xl shadow-2xl p-12 border border-slate-100">
               <div className="mb-8">
@@ -376,9 +373,9 @@ function PracticePageContent() {
             </div>
           </div>
         ) : (
-          /* Question Screen */
+
           <div className="space-y-6">
-            {/* Progress Header */}
+
             <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-100">
               <div className="flex items-center justify-between">
                 <div>
@@ -400,7 +397,7 @@ function PracticePageContent() {
               </div>
             </div>
 
-            {/* Question Card */}
+
             <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-100">
               <div className="mb-8">
                 <p className="text-xl font-medium text-slate-900 leading-relaxed whitespace-pre-wrap">
@@ -408,7 +405,7 @@ function PracticePageContent() {
                 </p>
               </div>
 
-              {/* Answer Options */}
+
               <div className="space-y-3 mb-8">
                 {activeQuestion?.options.map((option) => {
                   const isSelected = selectedAnswer === option.label;
@@ -428,14 +425,14 @@ function PracticePageContent() {
                             ? 'border-red-500 bg-red-50 text-red-900'
                             : isSelected
                               ? 'border-blue-500 bg-blue-50 text-blue-900 shadow-lg shadow-blue-500/20'
-                              : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
+                              : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50 text-slate-900'
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <span className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-100">
+                        <span className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-100 text-slate-700">
                           {option.label}
                         </span>
-                        <span className="flex-1 pt-1">{option.text}</span>
+                        <span className="flex-1 pt-1 text-slate-900">{option.text}</span>
                         {isSubmitted && isCorrect && (
                           <svg className="w-6 h-6 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -452,7 +449,7 @@ function PracticePageContent() {
                 })}
               </div>
 
-              {/* Action Buttons */}
+
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={handleSubmitAnswer}
@@ -478,7 +475,7 @@ function PracticePageContent() {
                 </button>
               </div>
 
-              {/* Hint */}
+
               {showHint && activeQuestion?.hint && (
                 <div className="mt-6 p-4 rounded-xl border-2 border-amber-300 bg-amber-50">
                   <div className="flex items-start gap-3">
@@ -495,7 +492,7 @@ function PracticePageContent() {
                 </div>
               )}
 
-              {/* Explanation */}
+
               {submittedAnswer && activeQuestion?.explanation && (
                 <div className="mt-6 p-4 rounded-xl border-2 border-blue-300 bg-blue-50">
                   <div className="flex items-start gap-3">

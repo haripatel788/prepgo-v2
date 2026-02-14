@@ -2,10 +2,9 @@ import { neon } from '@neondatabase/serverless';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-// Load environment variables from .env.local
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
-async function setupDatabase() {
+async function addStatsTables() {
   if (!process.env.DATABASE_URL) {
     console.error('❌ DATABASE_URL not found in .env.local');
     process.exit(1);
@@ -14,67 +13,8 @@ async function setupDatabase() {
   const sql = neon(process.env.DATABASE_URL);
 
   try {
-    console.log('🗄️  Creating tables...\n');
+    console.log('🗄️  Adding stats system tables...\n');
 
-    // Users table
-    console.log('Creating users table...');
-    await sql`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        username VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
-        first_name VARCHAR(255),
-        last_name VARCHAR(255),
-        profile_pic INTEGER DEFAULT 1,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `;
-    console.log('✅ Users table created');
-
-    // Scores table
-    console.log('Creating scores table...');
-    await sql`
-      CREATE TABLE IF NOT EXISTS scores (
-        id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-        subject VARCHAR(100),
-        score INTEGER,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `;
-    console.log('✅ Scores table created');
-
-    // Posts table
-    console.log('Creating posts table...');
-    await sql`
-      CREATE TABLE IF NOT EXISTS posts (
-        id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-        content TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `;
-    console.log('✅ Posts table created');
-
-    // Questions table
-    console.log('Creating questions table...');
-    await sql`
-      CREATE TABLE IF NOT EXISTS questions (
-        id SERIAL PRIMARY KEY,
-        question_text TEXT NOT NULL,
-        subject VARCHAR(100),
-        option_a TEXT,
-        option_b TEXT,
-        option_c TEXT,
-        option_d TEXT,
-        correct_answer CHAR(1),
-        explanation TEXT,
-        hint TEXT
-      )
-    `;
-    console.log('✅ Questions table created');
-
-    // User statistics table
     console.log('Creating user_stats table...');
     await sql`
       CREATE TABLE IF NOT EXISTS user_stats (
@@ -94,17 +34,12 @@ async function setupDatabase() {
     `;
     console.log('✅ User stats table created');
 
-    // Create index on user_id for faster lookups
     await sql`
       CREATE INDEX IF NOT EXISTS idx_user_stats_user_id ON user_stats(user_id)
     `;
-
-    // Create index on XP for leaderboard
     await sql`
       CREATE INDEX IF NOT EXISTS idx_user_stats_xp ON user_stats(xp_points DESC)
     `;
-
-    // Achievements table
     console.log('Creating achievements table...');
     await sql`
       CREATE TABLE IF NOT EXISTS achievements (
@@ -120,7 +55,6 @@ async function setupDatabase() {
     `;
     console.log('✅ Achievements table created');
 
-    // User achievements table (many-to-many)
     console.log('Creating user_achievements table...');
     await sql`
       CREATE TABLE IF NOT EXISTS user_achievements (
@@ -137,7 +71,6 @@ async function setupDatabase() {
       CREATE INDEX IF NOT EXISTS idx_user_achievements_user_id ON user_achievements(user_id)
     `;
 
-    // Chat messages table
     console.log('Creating chat_messages table...');
     await sql`
       CREATE TABLE IF NOT EXISTS chat_messages (
@@ -151,7 +84,6 @@ async function setupDatabase() {
     `;
     console.log('✅ Chat messages table created');
 
-    // Create indexes for efficient chat queries
     await sql`
       CREATE INDEX IF NOT EXISTS idx_chat_sender ON chat_messages(sender_id, created_at DESC)
     `;
@@ -164,7 +96,6 @@ async function setupDatabase() {
       CREATE INDEX IF NOT EXISTS idx_chat_conversation ON chat_messages(sender_id, recipient_id, created_at DESC)
     `;
 
-    // Study sessions table (enhanced tracking)
     console.log('Creating study_sessions table...');
     await sql`
       CREATE TABLE IF NOT EXISTS study_sessions (
@@ -185,7 +116,6 @@ async function setupDatabase() {
       CREATE INDEX IF NOT EXISTS idx_sessions_user_date ON study_sessions(user_id, session_date DESC)
     `;
 
-    // Insert default achievements
     console.log('\n🏆 Creating default achievements...');
     
     const achievements = [
@@ -208,22 +138,19 @@ async function setupDatabase() {
     }
     console.log('✅ Default achievements created');
 
-    console.log('\n🎉 Database setup complete!\n');
-    console.log('Tables created:');
-    console.log('  ✅ users');
-    console.log('  ✅ scores');
-    console.log('  ✅ posts');
-    console.log('  ✅ questions');
+    console.log('\n🎉 Stats system tables added successfully!\n');
+    console.log('New tables created:');
     console.log('  ✅ user_stats');
     console.log('  ✅ achievements');
     console.log('  ✅ user_achievements');
     console.log('  ✅ chat_messages');
     console.log('  ✅ study_sessions');
+    console.log('\nYour existing tables (users, scores, posts, questions) were not modified.');
     console.log('');
   } catch (error) {
-    console.error('❌ Error setting up database:', error);
+    console.error('❌ Error adding tables:', error);
     process.exit(1);
   }
 }
 
-setupDatabase();
+addStatsTables();

@@ -281,6 +281,9 @@ export default function LandingPage() {
           <p className="text-sm text-slate-500">
             © 2026 PrepGo. All rights reserved.
           </p>
+          <p className='text-sm text-slate-500 mt-2 '>
+            Created by <a className="underline" href="https://haripatel788.github.io/">Hari Patel</a>.
+          </p>
         </div>
       </footer>
 

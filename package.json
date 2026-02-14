@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "setup-db": "tsx scripts/setup-db.ts",
-    "populate-questions": "tsx scripts/populate-questions.ts"
+    "populate-questions": "tsx scripts/populate-questions.ts",
+    "add-stats": "tsx scripts/add-stats-tables.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
